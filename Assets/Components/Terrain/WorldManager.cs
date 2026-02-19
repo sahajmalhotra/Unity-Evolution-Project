@@ -16,6 +16,9 @@ namespace Antymology.Terrain
         /// </summary>
         public GameObject antPrefab;
 
+        public GameObject queenPrefab;
+
+
         /// <summary>
         /// The material used for eech block.
         /// </summary>
@@ -88,17 +91,29 @@ namespace Antymology.Terrain
         /// </summary>
 private void GenerateAnts()
 {
-    Debug.Log("Spawning ants...");
+    int worldSizeX = Blocks.GetLength(0);
+    int worldSizeZ = Blocks.GetLength(2);
 
-    for (int i = 0; i < 5; i++)
+    // Spawn ONE Queen
     {
+        int x = RNG.Next(1, worldSizeX - 1);
+        int z = RNG.Next(1, worldSizeZ - 1);
+
+        GameObject queen = Instantiate(queenPrefab);
+        queen.transform.position = new Vector3(x, Blocks.GetLength(1) - 2, z);
+    }
+
+    // Spawn Workers
+    for (int i = 0; i < 10; i++)
+    {
+        int x = RNG.Next(1, worldSizeX - 1);
+        int z = RNG.Next(1, worldSizeZ - 1);
+
         GameObject ant = Instantiate(antPrefab);
-
-        Debug.Log("Ant created: " + ant.name);
-
-        ant.transform.position = new Vector3(10 + i, 40, 10);
+        ant.transform.position = new Vector3(x, Blocks.GetLength(1) - 2, z);
     }
 }
+
 
 
         #endregion

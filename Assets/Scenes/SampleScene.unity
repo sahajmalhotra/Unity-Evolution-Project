@@ -371,6 +371,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   antPrefab: {fileID: 6719783987352710526, guid: 0d8f33cb8eba7462aac442f5aad1e5b4,
     type: 3}
+  queenPrefab: {fileID: 6719783987352710526, guid: 85fdc178751204c19bbd5b32d631780a,
+    type: 3}
   blockMaterial: {fileID: 2100000, guid: 4db9d8fce1a69b74f81daf1375c9ed88, type: 2}
 --- !u!4 &964896558
 Transform:

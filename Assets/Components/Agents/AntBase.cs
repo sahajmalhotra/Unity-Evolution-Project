@@ -25,7 +25,8 @@ namespace Antymology.Agents
 }
 
 
-        void Update()
+       protected virtual void Update()
+
         {
             // === HEALTH DECAY (REQUIRED) ===
             float decay = decayPerSecond * Time.deltaTime;
@@ -163,22 +164,30 @@ namespace Antymology.Agents
             SyncTransform();
         }
 
+
         // ===========================
         // HELPERS
         // ===========================
+int GetSurfaceHeight(int x, int z)
+{
+    int maxY =  WorldManager.Instance
+        .GetType()
+        .GetField("Blocks", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+        .GetValue(WorldManager.Instance) is AbstractBlock[,,] blocks
+        ? blocks.GetLength(1) - 1
+        : 200;
 
-        int GetSurfaceHeight(int x, int z)
-        {
-            for (int y = 200; y >= 0; y--)
-            {
-                var block = WorldManager.Instance.GetBlock(x, y, z);
+    for (int y = maxY; y >= 1; y--)
+    {
+        var block = WorldManager.Instance.GetBlock(x, y, z);
 
-                if (!(block is AirBlock))
-                    return y;
-            }
+        if (!(block is AirBlock))
+            return y;
+    }
 
-            return 0;
-        }
+    return 1;
+}
+
 
         Vector3Int FindSurfacePosition(int x, int z)
         {
@@ -186,4 +195,5 @@ namespace Antymology.Agents
             return new Vector3Int(x, y, z);
         }
     }
+
 }
