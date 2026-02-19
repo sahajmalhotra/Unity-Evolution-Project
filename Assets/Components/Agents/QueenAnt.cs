@@ -52,14 +52,26 @@ namespace Antymology.Agents
                 case 5: TryPlaceNest(); break;
             }
         }
+int ArgMax(float[] arr)
+{
+    if (arr == null || arr.Length == 0)
+        return 0;
 
-        int ArgMax(float[] arr)
+    int best = 0;
+    float bestVal = arr[0];
+
+    for (int i = 1; i < arr.Length; i++)
+    {
+        if (arr[i] > bestVal)
         {
-            int best = 0; float bestVal = arr[0];
-            for (int i = 1; i < arr.Length; i++)
-                if (arr[i] > bestVal) { bestVal = arr[i]; best = i; }
-            return best;
+            bestVal = arr[i];
+            best = i;
         }
+    }
+
+    return best;
+}
+
 
         void TryMoveDir(Vector3Int dir)
         {
@@ -74,15 +86,27 @@ namespace Antymology.Agents
             return block is AirBlock;
         }
 
-        void TryPlaceNest()
-        {
-            if (health < maxHealth * nestCostFraction) return;
-            if (!CanPlaceNestHere()) return;
+       void TryPlaceNest()
+{
+    if (health < maxHealth * nestCostFraction)
+        return;
 
-            WorldManager.Instance.SetBlock(gridPos.x, gridPos.y, gridPos.z, new NestBlock());
-            WorldManager.Instance.NestCount += 1;
+    int x = gridPos.x;
+    int y = gridPos.y;
+    int z = gridPos.z;
 
-            health -= maxHealth * nestCostFraction;
-        }
+    // HARD world safety guard
+    if (x <= 1 || y <= 1 || z <= 1)
+        return;
+
+    if (!CanPlaceNestHere())
+        return;
+
+    WorldManager.Instance.SetBlock(x, y, z, new NestBlock());
+    WorldManager.Instance.NestCount += 1;
+
+    health -= maxHealth * nestCostFraction;
+}
+
     }
 }

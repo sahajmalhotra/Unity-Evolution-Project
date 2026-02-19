@@ -13,17 +13,20 @@ namespace Antymology.Agents
         [Header("Position")]
         public Vector3Int gridPos;
 
-        void Start()
-
+    void Start()
 {
     health = maxHealth;
 
-    gridPos = new Vector3Int(
-        Mathf.RoundToInt(transform.position.x),
-        Mathf.RoundToInt(transform.position.y),
-        Mathf.RoundToInt(transform.position.z)
-    );
+    int x = Mathf.RoundToInt(transform.position.x);
+    int z = Mathf.RoundToInt(transform.position.z);
+
+    int y = GetSurfaceHeight(x, z);
+
+    gridPos = new Vector3Int(x, y, z);
+
+    SyncTransform();
 }
+
 
 
        protected virtual void Update()
@@ -72,7 +75,11 @@ namespace Antymology.Agents
         }
 
         void TryMoveTo(Vector3Int target)
+
         {
+            if (target.x <= 1 || target.z <= 1)
+    return;
+
             int currentHeight = GetSurfaceHeight(gridPos.x, gridPos.z);
             int targetHeight = GetSurfaceHeight(target.x, target.z);
 
@@ -118,27 +125,32 @@ namespace Antymology.Agents
 
             return block is MulchBlock;
         }
-
-        void TryConsumeMulch()
+void TryConsumeMulch()
 {
     if (!IsStandingOnMulch())
         return;
 
-    // Prevent out-of-bounds access (world borders)
-    if (gridPos.x <= 0 ||
-        gridPos.y <= 0 ||
-        gridPos.z <= 0)
+    int x = gridPos.x;
+    int y = gridPos.y;
+    int z = gridPos.z;
+
+    int worldHeight = WorldManager.Instance
+        .GetType()
+        .GetField("Blocks",
+            System.Reflection.BindingFlags.NonPublic |
+            System.Reflection.BindingFlags.Instance)
+        .GetValue(WorldManager.Instance) is AbstractBlock[,,] blocks
+        ? blocks.GetLength(1)
+        : 0;
+
+    if (y < 1 || y >= worldHeight - 1)
         return;
 
-    WorldManager.Instance.SetBlock(
-        gridPos.x,
-        gridPos.y,
-        gridPos.z,
-        new AirBlock()
-    );
+    WorldManager.Instance.SetBlock(x, y, z, new AirBlock());
 
     health = Mathf.Min(maxHealth, health + maxHealth * 0.6f);
 }
+
 
 
         public void TryDig()

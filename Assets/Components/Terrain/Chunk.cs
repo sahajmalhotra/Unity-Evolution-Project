@@ -123,6 +123,12 @@ namespace Antymology.Terrain
             // Optimize, and normal calculation
             MeshUtility.Optimize(mesh);
             mesh.RecalculateNormals();
+            if (mesh.vertexCount == 0)
+{
+    GetComponent<MeshCollider>().sharedMesh = null;
+    return;
+}
+
             collider.sharedMesh = mesh;
         }
 

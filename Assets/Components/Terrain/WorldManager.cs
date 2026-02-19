@@ -184,30 +184,34 @@ private void GenerateAnts()
         /// sets an abstract block type at the desired world coordinates.
         /// </summary>
         public void SetBlock(int WorldXCoordinate, int WorldYCoordinate, int WorldZCoordinate, AbstractBlock toSet)
-        {
-            if
-            (
-                WorldXCoordinate < 0 ||
-                WorldYCoordinate < 0 ||
-                WorldZCoordinate < 0 ||
-                WorldXCoordinate > Blocks.GetLength(0) ||
-                WorldYCoordinate > Blocks.GetLength(1) ||
-                WorldZCoordinate > Blocks.GetLength(2)
-            )
-            {
-                Debug.Log("Attempted to set a block which didn't exist");
-                return;
-            }
+{
+    // HARD WORLD BOUNDS CHECK
+    if (WorldXCoordinate < 0 ||
+        WorldYCoordinate < 0 ||
+        WorldZCoordinate < 0)
+        return;
 
-            Blocks[WorldXCoordinate, WorldYCoordinate, WorldZCoordinate] = toSet;
+    if (WorldXCoordinate >= Blocks.GetLength(0) ||
+        WorldYCoordinate >= Blocks.GetLength(1) ||
+        WorldZCoordinate >= Blocks.GetLength(2))
+        return;
 
-            SetChunkContainingBlockToUpdate
-            (
-                WorldXCoordinate,
-                WorldYCoordinate,
-                WorldZCoordinate
-            );
-        }
+    // SAFE ASSIGN
+    Blocks[WorldXCoordinate, WorldYCoordinate, WorldZCoordinate] = toSet;
+
+    // SAFELY UPDATE CHUNK
+    int chunkX = WorldXCoordinate / ConfigurationManager.Instance.Chunk_Diameter;
+    int chunkY = WorldYCoordinate / ConfigurationManager.Instance.Chunk_Diameter;
+    int chunkZ = WorldZCoordinate / ConfigurationManager.Instance.Chunk_Diameter;
+
+    if (chunkX >= 0 && chunkX < Chunks.GetLength(0) &&
+        chunkY >= 0 && chunkY < Chunks.GetLength(1) &&
+        chunkZ >= 0 && chunkZ < Chunks.GetLength(2))
+    {
+        Chunks[chunkX, chunkY, chunkZ].updateNeeded = true;
+    }
+}
+
 
         /// <summary>
         /// sets an abstract block type at the desired local coordinates within a chunk.
@@ -410,10 +414,27 @@ private void GenerateAnts()
         /// <param name="worldZCoordinate"></param>
         private void SetChunkContainingBlockToUpdate(int worldXCoordinate, int worldYCoordinate, int worldZCoordinate)
         {
+            if (worldXCoordinate < 0 || worldYCoordinate < 0 || worldZCoordinate < 0)
+    return;
+
+if (worldXCoordinate >= Blocks.GetLength(0) ||
+    worldYCoordinate >= Blocks.GetLength(1) ||
+    worldZCoordinate >= Blocks.GetLength(2))
+    return;
+
             //Updates the chunk containing this block
             int updateX = Mathf.FloorToInt(worldXCoordinate / ConfigurationManager.Instance.Chunk_Diameter);
             int updateY = Mathf.FloorToInt(worldYCoordinate / ConfigurationManager.Instance.Chunk_Diameter);
             int updateZ = Mathf.FloorToInt(worldZCoordinate / ConfigurationManager.Instance.Chunk_Diameter);
+            // SAFETY CHECK FOR CHUNK ARRAY
+if (updateX < 0 || updateY < 0 || updateZ < 0)
+    return;
+
+if (updateX >= Chunks.GetLength(0) ||
+    updateY >= Chunks.GetLength(1) ||
+    updateZ >= Chunks.GetLength(2))
+    return;
+
             Chunks[updateX, updateY, updateZ].updateNeeded = true;
             
             // Also flag all 6 neighbours for update as well
