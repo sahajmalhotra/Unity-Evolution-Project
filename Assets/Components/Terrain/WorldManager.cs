@@ -4,10 +4,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 namespace Antymology.Terrain
 {
     public class WorldManager : Singleton<WorldManager>
     {
+public void ResetNestCount()
+{
+    NestCount = 0;
+}
 
         #region Fields
 
@@ -33,6 +39,9 @@ namespace Antymology.Terrain
         /// Reference to the geometry data of the chunks.
         /// </summary>
         private Chunk[,,] Chunks;
+
+        public int NestCount = 0;
+
 
         /// <summary>
         /// Random number generator.

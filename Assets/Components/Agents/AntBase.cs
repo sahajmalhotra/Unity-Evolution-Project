@@ -14,6 +14,7 @@ namespace Antymology.Agents
         public Vector3Int gridPos;
 
         void Start()
+
 {
     health = maxHealth;
 
@@ -194,6 +195,13 @@ int GetSurfaceHeight(int x, int z)
             int y = GetSurfaceHeight(x, z);
             return new Vector3Int(x, y, z);
         }
+        
+protected bool IsStandingOnMulch_Public() => IsStandingOnMulch();
+protected bool IsStandingOnAcid_Public() => IsStandingOnAcid();
+protected void TryMoveTo_Public(Vector3Int target) => TryMoveTo(target);
+
+
     }
+
 
 }

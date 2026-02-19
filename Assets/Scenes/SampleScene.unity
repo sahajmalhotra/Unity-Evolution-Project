@@ -120,6 +120,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &532295413
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 532295414}
+  - component: {fileID: 532295415}
+  m_Layer: 0
+  m_Name: SimulationController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &532295414
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532295413}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &532295415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532295413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61721b3b3bbd24ab7853b95468449d34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Antymology.Agents.EvolutionManager
+  workerPrefab: {fileID: 6719783987352710526, guid: 0d8f33cb8eba7462aac442f5aad1e5b4,
+    type: 3}
+  queenPrefab: {fileID: 6719783987352710526, guid: 85fdc178751204c19bbd5b32d631780a,
+    type: 3}
+  workersPerEval: 12
+  inputSize: 6
+  hiddenSize: 8
+  outputSize: 6
+  populationSize: 12
+  elites: 3
+  mutationRate: 0.1
+  mutationStrength: 0.25
+  evalSeconds: 25
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -374,6 +431,7 @@ MonoBehaviour:
   queenPrefab: {fileID: 6719783987352710526, guid: 85fdc178751204c19bbd5b32d631780a,
     type: 3}
   blockMaterial: {fileID: 2100000, guid: 4db9d8fce1a69b74f81daf1375c9ed88, type: 2}
+  NestCount: 0
 --- !u!4 &964896558
 Transform:
   m_ObjectHideFlags: 0
@@ -484,3 +542,4 @@ SceneRoots:
   - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 964896558}
+  - {fileID: 532295414}
