@@ -86,10 +86,20 @@ namespace Antymology.Terrain
         /// <summary>
         /// TO BE IMPLEMENTED BY YOU
         /// </summary>
-        private void GenerateAnts()
-        {
-            throw new NotImplementedException();
-        }
+private void GenerateAnts()
+{
+    Debug.Log("Spawning ants...");
+
+    for (int i = 0; i < 5; i++)
+    {
+        GameObject ant = Instantiate(antPrefab);
+
+        Debug.Log("Ant created: " + ant.name);
+
+        ant.transform.position = new Vector3(10 + i, 40, 10);
+    }
+}
+
 
         #endregion
 
